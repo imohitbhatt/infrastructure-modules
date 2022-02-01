@@ -72,7 +72,7 @@ resource "aws_security_group" "myapp-sg" {
 
 
 # creating a key pair
-resource "aws_key_pair" "var.env_prefix" {
+resource "aws_key_pair" "ssh-key" {
   key_name   = "${var.env_prefix}-key"
   public_key = file(var.public_key_location)
 }
@@ -80,7 +80,7 @@ resource "aws_key_pair" "var.env_prefix" {
 resource "aws_launch_configuration" "myapp-web" {
   image_id                    = data.aws_ami.latest-amazon-linux-image.id
   instance_type               = var.instance_type
-  key_name                    = aws_key_pair.var.env_prefix.key_name
+  key_name                    = aws_key_pair.ssh-key.key_name
   security_groups             = [aws_security_group.myapp-sg.id]
   associate_public_ip_address = true
 
@@ -91,7 +91,7 @@ resource "aws_launch_configuration" "myapp-web" {
   }
 }
 
-resource "aws_elb" "var.env_prefix" {
+resource "aws_elb" "myapp-elb" {
   name                      = "${var.env_prefix}-elb"
   security_groups           = [aws_security_group.myapp-sg.id]
   subnets                   = [aws_subnet.myapp-subnet-1.id]
@@ -122,7 +122,7 @@ resource "aws_autoscaling_group" "myapp-asg" {
   max_size         = 2
 
   health_check_type    = "ELB"
-  load_balancers       = [aws_elb.var.env_prefix.id]
+  load_balancers       = [aws_elb.myapp-elb.id]
   launch_configuration = aws_launch_configuration.myapp-web.name
 
   enabled_metrics = [
