@@ -78,6 +78,7 @@ resource "aws_key_pair" "ssh-key" {
 }
 
 resource "aws_launch_configuration" "myapp-web" {
+  name                        = "${var.env_prefix}-lc"
   image_id                    = data.aws_ami.latest-amazon-linux-image.id
   instance_type               = var.instance_type
   key_name                    = aws_key_pair.ssh-key.key_name
