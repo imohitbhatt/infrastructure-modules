@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "git::https://github.com/imohitbhatt/infrastructure-modules.git//module"
+  source = "../../module//aws-module"
 }
 
 
@@ -15,4 +15,5 @@ inputs = {
   subnet_cidr_block   = "10.0.10.0/24"
   my_ip               = "203.129.220.226/32"
   public_key_location = "/home/xs162-mohbha/.ssh/id_rsa.pub"
+  bucket_id           = "prod-bucket-infra-test-01"
 }

@@ -1,6 +1,0 @@
-**/.terraform/*
-**/.terragrunt-cache/*
-.terraform
-terraform.tfvars
-*.tfstate
-*.tfstate.backup
